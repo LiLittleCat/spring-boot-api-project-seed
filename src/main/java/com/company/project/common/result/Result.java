@@ -1,7 +1,10 @@
 package com.company.project.common.result;
 
 import io.swagger.annotations.ApiModel;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.Accessors;
 
 /**
  * <p>
@@ -9,43 +12,69 @@ import lombok.Data;
  * </p>
  *
  * @author LiLittleCat
- * @since 2020/8/30
  */
-@Data
+@Getter
+@Setter
+@ToString
+@Accessors(chain = true)
 @ApiModel(value = "接口响应体格式统一封装")
 public class Result<T> {
     /**
      * 响应状态码
      */
-    private Integer code;
+    private String code;
     /**
      * 响应信息
      */
-    private String msg;
+    private String message;
     /**
      * 附加信息
      */
     private T data;
 
-    public Result(int code, String msg) {
+    public Result(String code, String message) {
         this.code = code;
-        this.msg = msg;
+        this.message = message;
     }
 
-    public Result(int code, String msg, T data) {
+    public Result(String code, String message, T data) {
         this.code = code;
-        this.msg = msg;
+        this.message = message;
         this.data = data;
     }
 
-    public Result(ResultCode resultCode) {
-        this.code = resultCode.getCode();
-        this.msg = resultCode.getMsg();
+    public Result(ResultCodeEnum resultCodeEnum) {
+        this.code = resultCodeEnum.getCode();
+        this.message = resultCodeEnum.getMessage();
     }
 
-    public Result(ResultCode resultCode, T data) {
-        this.code = resultCode.getCode();
-        this.msg = resultCode.getMsg();
+    public Result(ResultCodeEnum resultCodeEnum, T data) {
+        this.code = resultCodeEnum.getCode();
+        this.message = resultCodeEnum.getMessage();
         this.data = data;
+    }
+
+    public static <T> Result<T> success() {
+        return new Result<>(ResultCodeEnum.SUCCESS);
+    }
+
+    public static <T> Result<T> success(String message) {
+        return new Result<>(ResultCodeEnum.SUCCESS.getCode(), message);
+    }
+
+    public static <T> Result<T> success(T data) {
+        return new Result<>(ResultCodeEnum.SUCCESS, data);
+    }
+
+    public static <T> Result<T> fail() {
+        return new Result<>(ResultCodeEnum.FAIL);
+    }
+
+    public static <T> Result<T> fail(String message) {
+        return new Result<>(ResultCodeEnum.FAIL.getCode(), message);
+    }
+
+    public static <T> Result<T> fail(T data) {
+        return new Result<>(ResultCodeEnum.FAIL, data);
     }
 }
