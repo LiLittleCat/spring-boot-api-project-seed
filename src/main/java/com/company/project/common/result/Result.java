@@ -77,4 +77,12 @@ public class Result<T> {
     public static <T> Result<T> fail(T data) {
         return new Result<>(ResultCodeEnum.FAIL, data);
     }
+
+    public static <T> Result<T> fail(ResultCodeEnum resultCodeEnum) {
+        return new Result<>(resultCodeEnum);
+    }
+
+    public static <T> Result<T> fail(ResultCodeEnum resultCodeEnum, T data) {
+        return new Result<>(resultCodeEnum, data);
+    }
 }
